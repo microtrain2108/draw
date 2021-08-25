@@ -42,6 +42,10 @@ var draw = (function() {
         //Fill color
         var fill='';
 
+        //Draw 3-point Triangle
+        var points = [];
+        var i = 0;
+
     return {
   
       //Set the x,y coords based on current event data
@@ -73,7 +77,23 @@ var draw = (function() {
         x2=x;
         y2=y;
       },
-  
+
+    //Draw 3-point Triangle
+    setPoint: function(){
+
+        points[i]=[];
+        points[i]['x']=x;
+        points[i]['y']=y;
+
+        if(points.length>2){
+            this.draw();
+            i=0;
+            points=[];
+        }else{
+            i++;
+        }        
+    },
+
       //Set a random color	
       randColor: function(){	
         return '#' + Math.floor(Math.random()*16777215).toString(16);	
@@ -136,6 +156,8 @@ var draw = (function() {
           this.drawCircle();
         } else if( shape==='triangle' ) {
             this.drawTriangle();
+        } else if( shape==='3-point' ) {
+            this.draw3Point();
         } else {
           alert('Please choose a shape');
         }
@@ -230,6 +252,22 @@ var draw = (function() {
         ctx.fill();
       },
 
+    //Draw 3-point Triangle
+    draw3Point: function(){
+        ctx.fillStyle = this.getFillColor();
+        ctx.strokeStyle = this.getStrokeColor();
+  
+        ctx.beginPath();
+  
+        ctx.moveTo(points[0]['x'], points[0]['y']);
+        ctx.lineTo(points[1]['x'], points[1]['y']);
+        ctx.lineTo(points[2]['x'], points[2]['y']);
+        ctx.lineTo(points[0]['x'], points[0]['y']);
+  
+        ctx.stroke();
+        ctx.fill();
+    },
+
       getCanvas: function(){
         return canvas;
       },
@@ -261,19 +299,29 @@ var draw = (function() {
   
   //Add a mousedown listener to the canvas
   //Set the starting position
-  draw.getCanvas().addEventListener('mousedown', function() {
-    draw.setStart();
-    draw.setIsDrawing(true);
-  }, false);
-  
+draw.getCanvas().addEventListener('mousedown', function() {
+  //Draw 3-point Triangle
+  if(draw.getShape()!=='3-point'){
+  draw.setStart();
+  draw.setIsDrawing(true);
+  }
+}, false);
+
   //Add a mouseup listener to the canvas
   //Set the end position and draw the rectangle
-  draw.getCanvas().addEventListener('mouseup', function() {
-    draw.setEnd();
-    draw.draw();
-    draw.setIsDrawing(false);
-  }, false);
-  
+draw.getCanvas().addEventListener('mouseup', function() {
+  //Draw 3-point Triangle
+  if(draw.getShape()!=='3-point'){
+  draw.setEnd();
+  draw.draw();
+  draw.setIsDrawing(false);
+  }
+      //Draw 3-point Triangle
+      if(draw.getShape()==='3-point'){
+        draw.setPoint();
+        }        
+}, false);
+
   document.getElementById('btnRect').addEventListener('click', function(){
       draw.setShape('rectangle');
   }, false);
@@ -309,3 +357,7 @@ var draw = (function() {
   document.getElementById('randFillColor').addEventListener('change', function(){
   draw.setFillColor('');
   }); 
+
+  document.getElementById('btn3Point').addEventListener('click', function(){
+    draw.setShape('3-point');
+  });
