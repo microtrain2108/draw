@@ -35,7 +35,13 @@ var draw = (function() {
   
       //Are we drawimg a path?
       isDrawing=false;
-  
+
+        //Stroke color
+        var stroke='';
+
+        //Fill color
+        var fill='';
+
     return {
   
       //Set the x,y coords based on current event data
@@ -68,6 +74,37 @@ var draw = (function() {
         y2=y;
       },
   
+      //Set a random color	
+      randColor: function(){	
+        return '#' + Math.floor(Math.random()*16777215).toString(16);	
+      },	
+
+      //A setter for stroke	
+      setStrokeColor: function(color){	
+        stroke = color;	
+      },	
+
+      //A getter for stroke	
+      getStrokeColor: function(){	
+            if(stroke.length > 6){	
+            return stroke;	
+            }	
+            return this.randColor();	
+      },	
+
+      //A setter for fill	
+      setFillColor: function(color){	
+            fill = color;	
+      },	
+
+      //A getter for fill	
+      getFillColor: function(){	
+        if(fill.length > 6){	
+        return fill;	
+        }	
+        return this.randColor();	
+      },
+
       //Sets the shape to be drawn
       setShape: function(shp) {
         shape = shp;
@@ -109,9 +146,11 @@ var draw = (function() {
       //Draw a circle
       drawCircle: function() {
   
-        ctx.strokeStyle = '#'+Math.floor(Math.random()*16777215).toString(16);
-        ctx.fillStyle = '#'+Math.floor(Math.random()*16777215).toString(16);
-  
+        ctx.strokeStyle = this.getStrokeColor();
+        // ctx.strokeStyle = '#'+Math.floor(Math.random()*16777215).toString(16);
+        ctx.fillStyle = this.getFillColor();
+        // ctx.fillStyle = '#'+Math.floor(Math.random()*16777215).toString(16);
+
         let a = (x1-x2)
         let b = (y1-y2)
         let radius = Math.sqrt( a*a + b*b );
@@ -248,3 +287,19 @@ var draw = (function() {
   document.getElementById('btnTriangle').addEventListener('click', function(){
     draw.setShape('triangle');
   }, false);
+
+  document.getElementById('strokeColor').addEventListener('change', function(){
+    draw.setStrokeColor(document.getElementById('strokeColor').value);
+  });
+
+  document.getElementById('randStrokeColor').addEventListener('change', function(){
+  draw.setStrokeColor('');
+  });
+
+  document.getElementById('fillColor').addEventListener('change', function(){
+  draw.setFillColor(document.getElementById('fillColor').value);
+  });
+
+  document.getElementById('randFillColor').addEventListener('change', function(){
+  draw.setFillColor('');
+  }); 
