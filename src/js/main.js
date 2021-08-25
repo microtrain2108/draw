@@ -214,8 +214,11 @@ var draw = (function() {
             d = y1-c;
         }
         //Start by using random fill colors.
-        ctx.fillStyle = '#'+Math.floor(Math.random()*16777215).toString(16);
-        ctx.strokeStyle = '#'+Math.floor(Math.random()*16777215).toString(16);
+        ctx.fillStyle = this.getFillColor();
+        ctx.strokeStyle = this.getStrokeColor();
+        // ctx.fillStyle = '#'+Math.floor(Math.random()*16777215).toString(16);
+        // ctx.strokeStyle = '#'+Math.floor(Math.random()*16777215).toString(16);        
+        ctx.beginPath();        
         ctx.beginPath();
         ctx.moveTo(x1, y1);
 
