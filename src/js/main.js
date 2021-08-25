@@ -184,10 +184,13 @@ var draw = (function() {
   
       //Draw a rectangle
       drawRect: function() {
+        ctx.strokeStyle = this.getStrokeColor();
         //Start by using random fill colors.
-        ctx.fillStyle = '#'+Math.floor(Math.random()*16777215).toString(16);
+        ctx.fillStyle = this.getFillColor();
+        // ctx.fillStyle = '#'+Math.floor(Math.random()*16777215).toString(16);      
         ctx.fillRect (x1,y1,(x2-x1),(y2-y1));
-      },
+        ctx.stroke();
+        },
 
       //Draw a Triangle
       drawTriangle: function() {
